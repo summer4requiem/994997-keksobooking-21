@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
 
 * Студент: [Агата Агеева](https://up.htmlacademy.ru/javascript/21/user/994997).
-* Наставник: `Неизвестно`.
+
 
 ---
 
