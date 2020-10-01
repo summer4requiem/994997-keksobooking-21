@@ -1,20 +1,39 @@
 "use strict";
-const MAX_ADV_COUNT = 8;
-let map = document.querySelector(`.map`);
+const TOTAL_OBJECTS = 8;
 
-let mapPinsContainer = map.querySelector(`.map__pins`);
+const PIN_WIDTH = 40;
+const PIN_HEIGHT = 40;
+
+const LOCATION_X_MIN = 10;
+const LOCATION_X_MAX = 1000;
+const LOCATION_Y_MIN = 130;
+const LOCATION_Y_MAX = 630;
+
+
+let mapPinsContainer = document.querySelector(`.map__pins`);
+let map = document.querySelector(`.map`);
 map.classList.remove(`map--faded`);
 const pinTemplate = document.querySelector(`#pin`).content.querySelector(`.map__pin`);
-
+const cardTemplate = document.querySelector(`#card`).content.querySelector(`.map__card`);
 const features = [`wifi`, `dishwasher`, `parking`, `washer`, `elevator`, `conditioner`];
 
 
-let createAdvertisementArray = () => {
-  let adv = [];
-  for (let index = 0; index < MAX_ADV_COUNT; index++) {
-    adv.push({
+const PHOTOS = [`http://o0.github.io/assets/images/tokyo/hotel1.jpg`, `http://o0.github.io/assets/images/tokyo/hotel2.jpg`, `http://o0.github.io/assets/images/tokyo/hotel3.jpg`];
+
+const getRandomLengthArr = (arr) => {
+  const randomArray = [];
+  for (let i = 0; i < window.getRandomRange(1, arr.length); i++) {
+    randomArray.push(arr[i]);
+  }
+  return randomArray;
+};
+
+const createAdvertisementArray = () => {
+  let advertisements = [];
+  for (let i = 0; i < TOTAL_OBJECTS; i++) {
+    advertisements.push({
       author: {
-        avatar: `img/avatars/user0` + window.getRandomRange(1, 8) + `.png`,
+        avatar: `img/avatars/user0` + [i + 1] + `.png`,
       },
       offer: {
         title: `Заголовок`,
@@ -25,36 +44,82 @@ let createAdvertisementArray = () => {
         guests: 2,
         checkin: `12:00`,
         checkout: `13:00`,
-        features: window.getRandomArrayItem(features),
-        description: `строка с описанием`,
-        photos: [`http://o0.github.io/assets/images/tokyo/hotel1.jpg`, `http://o0.github.io/assets/images/tokyo/hotel2.jpg`, `http://o0.github.io/assets/images/tokyo/hotel3.jpg`],
+        features: getRandomLengthArr(features),
+        description: `Великолепная квартира в центре Токио`,
+        photos: getRandomLengthArr(PHOTOS),
       },
       location: {
-        x: window.getRandomRange(200, 600),
-        y: window.getRandomRange(130, 630),
+        x: window.getRandomRange(LOCATION_X_MIN, LOCATION_X_MAX),
+        y: window.getRandomRange(LOCATION_Y_MIN, LOCATION_Y_MAX),
       }
     });
   }
-  return adv;
+
+  return advertisements;
 };
 
 
-const renderPin = (pin) => {
-  let pinImg = pinTemplate.cloneNode(true);
-  pin.map((p) => {
-    pinImg.style.left = p.location.x + `px`;
-    pinImg.style.top = p.location.y + `px`;
-    pinImg.querySelector(`img`).src = p.author.avatar;
-
-  });
-
+const createPin = (pin) => {
+  const pinImg = pinTemplate.cloneNode(true);
+  pinImg.style.left = pin.location.x + `px`;
+  pinImg.style.top = pin.location.y + `px`;
+  pinImg.querySelector(`img`).src = pin.author.avatar;
+  pinImg.style.alt = pin.description;
   return pinImg;
 };
 
+const renderPins = () => {
+  const fragment = document.createDocumentFragment();
+  const pins = createAdvertisementArray();
+  for (let index = 0; index < TOTAL_OBJECTS; index++) {
+    fragment.appendChild(createPin(pins[index]));
+  }
+  mapPinsContainer.appendChild(fragment);
+};
 
-const fragment = document.createDocumentFragment();
-for (let index = 0; index < MAX_ADV_COUNT; index++) {
-  fragment.appendChild(renderPin(createAdvertisementArray()));
-}
 
-mapPinsContainer.appendChild(fragment);
+const renderCard = (card) => {
+  let cardArticle = cardTemplate.cloneNode(true);
+  cardArticle.querySelector(`.popup__avatar`).src = card.author.avatar;
+  cardArticle.querySelector(`.popup__title`).textContent = card.offer.title;
+  cardArticle.querySelector(`.popup__text--address`).textContent = card.offer.address;
+  cardArticle.querySelector(`.popup__text--price`).textContent = card.offer.price + `₽/ночь`;
+  cardArticle.querySelector(`.popup__type`).textContent = card.offer.type;
+  cardArticle.querySelector(`.popup__text--time`).textContent = `Заезд до ` + card.offer.checkin + ` Выезд после` + card.offer.checkout;
+  let featuresList = cardArticle.querySelector(`.popup__features`);
+  cardArticle.querySelector(`.popup__description`).textContent = card.offer.description;
+  featuresList.textContent = ``;
+
+  card.offer.features.forEach((element) => {
+    const fragment = document.createDocumentFragment();
+    let featuresItem = document.createElement(`li`);
+    featuresItem.classList.add(`popup__feature`, `popup__feature` + `--` + element);
+    fragment.appendChild(featuresItem);
+    featuresList.appendChild(fragment);
+  });
+
+
+  let photoContainer = cardArticle.querySelector(`.popup__photos`);
+  photoContainer.textContent = ``;
+
+  card.offer.photos.forEach((p) => {
+    let photo = document.createElement(`img`);
+    photo.classList.add(`popup__photo`);
+    photo.src = p;
+    photo.width = PIN_WIDTH;
+    photo.height = PIN_HEIGHT;
+    photoContainer.append(photo);
+  });
+
+  return cardArticle;
+};
+
+
+const showCard = () => {
+  const fragment = document.createDocumentFragment();
+  fragment.appendChild(renderCard(createAdvertisementArray()[0]));
+  map.append(fragment);
+};
+
+showCard();
+renderPins();
