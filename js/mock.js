@@ -1,36 +1,46 @@
 "use strict";
 (function () {
   const TOTAL_OBJECTS = 8;
-
+  const LOCATION_X_MIN = 10;
+  const LOCATION_X_MAX = 1000;
+  const LOCATION_Y_MIN = 130;
+  const LOCATION_Y_MAX = 630;
+  const PRICE = [200, 300, 500, 600, 700];
   const features = [`wifi`, `dishwasher`, `parking`, `washer`, `elevator`, `conditioner`];
-  const photos = [`http://o0.github.io/assets/images/tokyo/hotel1.jpg`, `http://o0.github.io/assets/images/tokyo/hotel2.jpg`, `http://o0.github.io/assets/images/tokyo/hotel3.jpg`];
+  const PHOTOS = [`http://o0.github.io/assets/images/tokyo/hotel1.jpg`, `http://o0.github.io/assets/images/tokyo/hotel2.jpg`, `http://o0.github.io/assets/images/tokyo/hotel3.jpg`];
 
-  window.createAdvertisementArray = () => {
-    let adv = [];
-    for (let index = 0; index < TOTAL_OBJECTS; index++) {
-      adv.push({
+  const createAdvertisementArray = () => {
+    let advertisements = [];
+    for (let i = 0; i < TOTAL_OBJECTS; i++) {
+      advertisements.push({
         author: {
-          avatar: `img/avatars/user0` + window.getRandomRange(1, 8) + `.png`,
+          avatar: `img/avatars/user0` + [i + 1] + `.png`,
         },
         offer: {
           title: `Заголовок`,
           address: `Ленина 202`,
-          price: 200,
+          price: getRandom.arrayItem(PRICE),
           type: `palace`,
           rooms: 2,
           guests: 2,
           checkin: `12:00`,
           checkout: `13:00`,
-          features: window.getRandomArrayItem(features),
-          description: `строка с описанием`,
-          photos: window.getRandomArrayItem(photos),
+          features: getRandom.lengthArr(features),
+          description: `Великолепная квартира в центре Токио`,
+          photos: getRandom.lengthArr(PHOTOS),
         },
         location: {
-          x: window.getRandomRange(200, 600),
-          y: window.getRandomRange(130, 630),
+          x: getRandom.range(LOCATION_X_MIN, LOCATION_X_MAX),
+          y: getRandom.range(LOCATION_Y_MIN, LOCATION_Y_MAX),
         }
       });
     }
-    return adv;
+
+    return advertisements;
   };
+
+  window.createAdvertisement = {
+    array: createAdvertisementArray,
+  };
+
 })();
