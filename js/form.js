@@ -1,17 +1,16 @@
 'use strict';
 (function () {
   const form = document.querySelector(`.ad-form`);
-  const formFilters = form.querySelector(`.map__filters`);
+  // const formFilters = form.querySelector(`.map__filters`);
   const inputAdTitle = form.querySelector(`#title`);
   const formAdPrice = form.querySelector(`#price`);
-  const housingType = form.querySelector(`#housing-type`);
-  const housingPrice = form.querySelector(`#housing-price`);
+  // const housingType = form.querySelector(`#housing-type`);
+  // const housingPrice = form.querySelector(`#housing-price`);
   const adFormType = form.querySelector(`#type`);
-  const adFormElement = form.querySelector(`.ad-form__element`);
+  // const adFormElement = form.querySelector(`.ad-form__element`);
   const timein = form.querySelector(`#timein`);
   const timeout = form.querySelector(`#timeout`);
   const roomsAmount = form.querySelector(`#room_number`).querySelectorAll(`option`);
-  const roomsNumber = form.querySelector(`#room_number`).querySelectorAll(`option`);
   const roomsNumberList = form.querySelector(`#room_number`);
   const roomCapacity = form.querySelector(`#capacity`);
 
@@ -102,5 +101,9 @@
       }
     }
   });
+
+  // fieldSets.forEach((field) => {
+  //   field.disabled = true;
+  // });
 
 })();
