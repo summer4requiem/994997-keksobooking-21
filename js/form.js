@@ -1,9 +1,13 @@
 'use strict';
 (() => {
   const form = document.querySelector(`.ad-form`);
+  // const formFilters = form.querySelector(`.map__filters`);
   const inputAdTitle = form.querySelector(`#title`);
   const formAdPrice = form.querySelector(`#price`);
+  // const housingType = form.querySelector(`#housing-type`);
+  // const housingPrice = form.querySelector(`#housing-price`);
   const adFormType = form.querySelector(`#type`);
+  // const buildingType = form.querySelector(`.ad-form__element`).querySelectorAll(`option`);
   const timein = form.querySelector(`#timein`);
   const timeout = form.querySelector(`#timeout`);
   const guestsAmount = form.querySelector(`#capacity`).querySelectorAll(`option`);
@@ -25,7 +29,7 @@
   };
 
   inputAdTitle.addEventListener(`change`, function () {
-    let inputText = inputAdTitle.value.replace(/\s+/g, ' ').trim();
+    let inputText = inputAdTitle.value.replace(/\s+/g, ``).trim();
     inputAdTitle.value = inputText;
     if (inputText.length < MIN_LENGTH) {
       inputAdTitle.setCustomValidity(`Минимальное количество символов: ` + inputAdTitle.minLength);
@@ -70,32 +74,36 @@
 
   const updateRoomsNumberList = () => {
     guestsAmount.forEach((option) => {
-      option.setAttribute("disabled", true);
-      option.removeAttribute("selected");
+      option.setAttribute(`disabled`, true);
+      option.removeAttribute(`selected`);
     });
 
     const showedRooms = new Set();
     switch (roomsNumberList.value) {
       case `3`:
-        showedRooms.add('3');
+        showedRooms.add(`3`);
+        // fall through
       case `2`:
-        showedRooms.add('2');
+        showedRooms.add(`2`);
+        // fall through
       case `1`:
-        showedRooms.add('1');
+        showedRooms.add(`1`);
         break;
       case `100`:
-        showedRooms.add('0');
+        showedRooms.add(`0`);
     }
 
     guestsAmount.forEach((option) => {
       if (showedRooms.has(option.value)) {
-        option.removeAttribute("disabled");
+        option.removeAttribute(`disabled`);
       }
     });
 
-    roomCapacity.querySelector('option:not(:disabled)').setAttribute('selected',true);
-  }
+    roomCapacity.querySelector(`option:not(:disabled)`).setAttribute(`selected`, true);
+  };
 
   updateRoomsNumberList();
   roomsNumberList.addEventListener(`change`, updateRoomsNumberList);
+
+
 })();

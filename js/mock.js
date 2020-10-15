@@ -19,19 +19,25 @@
         },
         offer: {
           title: `Заголовок`,
+          // eslint-disable-next-line no-undef
           address: `${getRandom.range(LOCATION_X_MIN, LOCATION_X_MAX)}, ${getRandom.range(LOCATION_X_MIN, LOCATION_X_MAX)}`,
+          // eslint-disable-next-line no-undef
           price: getRandom.arrayItem(PRICE),
           type: `palace`,
           rooms: 2,
           guests: 2,
           checkin: `12:00`,
           checkout: `13:00`,
+          // eslint-disable-next-line no-undef
           features: getRandom.lengthArr(features),
           description: `Великолепная квартира в центре Токио`,
+          // eslint-disable-next-line no-undef
           photos: getRandom.lengthArr(PHOTOS),
         },
         location: {
+          // eslint-disable-next-line no-undef
           x: getRandom.range(LOCATION_X_MIN, LOCATION_X_MAX),
+          // eslint-disable-next-line no-undef
           y: getRandom.range(LOCATION_Y_MIN, LOCATION_Y_MAX),
         }
       });

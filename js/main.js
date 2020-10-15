@@ -15,6 +15,7 @@
       map.classList.remove(`map--faded`);
       adForm.classList.remove(`ad-form--disabled`);
     });
+    // eslint-disable-next-line no-undef
     render.pins();
     mainPin.removeEventListener(`mousedown`, onMouseDownActivatePage);
     mainPin.removeEventListener(`keydown`, onKeyDownActivatePage);

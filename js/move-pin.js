@@ -16,17 +16,17 @@
     let startCoords = {
       x: evt.clientX,
       y: evt.clientY
-    }
+    };
 
     const onMouseMove = (evtMove) => {
       const shiftCoord = {
         x: startCoords.x - evtMove.clientX,
         y: startCoords.y - evtMove.clientY
-      }
+      };
       startCoords = {
         x: evtMove.clientX,
         y: evtMove.clientY
-      }
+      };
 
       let left = mainPin.offsetLeft - shiftCoord.x;
       let top = mainPin.offsetTop - shiftCoord.y;
@@ -37,8 +37,8 @@
     };
 
     const onMouseUp = () => {
-      document.removeEventListener('mousemove', onMouseUp);
-      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener(`mousemove`, onMouseUp);
+      document.removeEventListener(`mousemove`, onMouseMove);
     };
 
     const checkCoordsLimit = (coords, min, max) => {
@@ -46,10 +46,11 @@
         return max;
       } else if (coords < min) {
         return min;
-      } else return coords;
-    }
-
-    document.addEventListener('mouseup', onMouseUp);
-    document.addEventListener('mousemove', onMouseMove);
+      } else {
+        return coords;
+      }
+    };
+    document.addEventListener(`mouseup`, onMouseUp);
+    document.addEventListener(`mousemove`, onMouseMove);
   });
 })();
