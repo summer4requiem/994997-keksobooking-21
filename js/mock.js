@@ -1,24 +1,25 @@
 "use strict";
-(function () {
+(() => {
   const TOTAL_OBJECTS = 8;
-  const LOCATION_X_MIN = 10;
-  const LOCATION_X_MAX = 1000;
+  const LOCATION_X_MIN = 0;
+  const LOCATION_X_MAX = 1200;
   const LOCATION_Y_MIN = 130;
   const LOCATION_Y_MAX = 630;
+
   const PRICE = [200, 300, 500, 600, 700];
   const features = [`wifi`, `dishwasher`, `parking`, `washer`, `elevator`, `conditioner`];
   const PHOTOS = [`http://o0.github.io/assets/images/tokyo/hotel1.jpg`, `http://o0.github.io/assets/images/tokyo/hotel2.jpg`, `http://o0.github.io/assets/images/tokyo/hotel3.jpg`];
 
   const createAdvertisementArray = () => {
     let advertisements = [];
-    for (let i = 0; i < TOTAL_OBJECTS; i++) {
+    for (let i = 1; i <= TOTAL_OBJECTS; i++) {
       advertisements.push({
         author: {
-          avatar: `img/avatars/user0` + [i + 1] + `.png`,
+          avatar: `img/avatars/user0${i}.png`,
         },
         offer: {
           title: `Заголовок`,
-          address: `Ленина 202`,
+          address: `${getRandom.range(LOCATION_X_MIN, LOCATION_X_MAX)}, ${getRandom.range(LOCATION_X_MIN, LOCATION_X_MAX)}`,
           price: getRandom.arrayItem(PRICE),
           type: `palace`,
           rooms: 2,
@@ -39,8 +40,5 @@
     return advertisements;
   };
 
-  window.createAdvertisement = {
-    array: createAdvertisementArray,
-  };
-
+  window.createAdvertisement = createAdvertisementArray;
 })();

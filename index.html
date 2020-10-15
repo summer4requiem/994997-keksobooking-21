@@ -25,7 +25,7 @@
           <h2 class="map__title">И снова Токио!</h2>
         </div>
         <button class="map__pin map__pin--main" style="left: 570px; top: 375px;">
-          <img src="img/muffin-red.svg" width="40" height="44" draggable="false" alt="Метка объявления">
+          <img src="img/muffin-red.svg" width="40" height="44" draggable="true" alt="Метка объявления">
           <svg viewBox="0 0 70 70" width="156" height="156" aria-label="Метка для поиска жилья">
             <defs>
               <path d="M35,35m-23,0a23,23 0 1,1 46,0a23,23 0 1,1 -46,0" id="tophalf" />
@@ -111,8 +111,7 @@
         </fieldset>
         <fieldset class="ad-form__element ad-form__element--wide">
           <label class="ad-form__label" for="title">Заголовок объявления</label>
-          <input id="title" name="title" type="text" placeholder="Милая, уютная квартирка в центре Токио" required
-            minlength="30" maxlength="100">
+          <input id="title" name="title" type="text" placeholder="Милая, уютная квартирка в центре Токио"minlength="30" maxlength="100" >
         </fieldset>
         <fieldset class="ad-form__element ad-form__element--wide">
           <label class="ad-form__label" for="address">Адрес</label>
@@ -272,6 +271,7 @@
   <script src="./js/utills.js"></script>
   <script src="./js/main.js"></script>
   <script src="./js/pin.js"></script>
+  <script src="./js/move-pin.js"></script>
   <script src="./js/card.js"></script>
   <script src="./js/form.js"></script>
 

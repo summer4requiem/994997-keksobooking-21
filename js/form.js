@@ -1,5 +1,5 @@
 'use strict';
-(function () {
+(() => {
   const form = document.querySelector(`.ad-form`);
   // const formFilters = form.querySelector(`.map__filters`);
   const inputAdTitle = form.querySelector(`#title`);
@@ -7,16 +7,17 @@
   // const housingType = form.querySelector(`#housing-type`);
   // const housingPrice = form.querySelector(`#housing-price`);
   const adFormType = form.querySelector(`#type`);
-  // const adFormElement = form.querySelector(`.ad-form__element`);
+  // const buildingType = form.querySelector(`.ad-form__element`).querySelectorAll(`option`);
   const timein = form.querySelector(`#timein`);
   const timeout = form.querySelector(`#timeout`);
-  const roomsAmount = form.querySelector(`#room_number`).querySelectorAll(`option`);
+  const guestsAmount = form.querySelector(`#capacity`).querySelectorAll(`option`);
   const roomsNumberList = form.querySelector(`#room_number`);
   const roomCapacity = form.querySelector(`#capacity`);
-
+  const MIN_LENGTH = 30;
+  const MAX_LENGTH = 100;
   const MAX_PRICE = 1000000;
 
-  let minPrice = {
+  let MinPrice = {
     bungalow: 0,
     house: 5000,
     flat: 1000,
@@ -27,40 +28,43 @@
     second.value = first.value;
   };
 
-
-  inputAdTitle.addEventListener(`invalid`, function () {
-    if (inputAdTitle.validity.tooShort) {
+  inputAdTitle.addEventListener(`change`, function () {
+    let inputText = inputAdTitle.value.replace(/\s+/g, ' ').trim();
+    inputAdTitle.value = inputText;
+    if (inputText.length < MIN_LENGTH) {
       inputAdTitle.setCustomValidity(`Минимальное количество символов: ` + inputAdTitle.minLength);
-    } else if (inputAdTitle.validity.tooLong) {
-      inputAdTitle.setCustomValidity(`Максимальное количество символов:` + inputAdTitle.minLength);
-    } else if (inputAdTitle.validity.valueMissing) {
-      inputAdTitle.setCustomValidity(`Минимальное количество символов: ` + inputAdTitle.minLength);
+    } else if (inputAdTitle >= MAX_LENGTH) {
+      inputAdTitle.setCustomValidity(`Максимальное количество символов: ` + inputAdTitle.maxLength);
     } else {
       inputAdTitle.setCustomValidity(``);
     }
+    inputAdTitle.reportValidity();
   });
 
 
   formAdPrice.addEventListener(`input`, function () {
-    let inputText = formAdPrice.value.trim();
-    if (inputText > MAX_PRICE) {
+    let inputText = +formAdPrice.value;
+    if (inputText === 0) {
+      formAdPrice.setCustomValidity(`Введите число!`);
+    } else if (inputText > MAX_PRICE) {
       formAdPrice.setCustomValidity(`Максимальная цена за ночь 1 000 000 !`);
-    } else if (adFormType.value === `house` && inputText < minPrice.house) {
-      formAdPrice.setCustomValidity(`Минимальная стоимость дома не должна быть меньше ` + minPrice.house + ` руб`);
-    } else if (adFormType.value === `flat` && inputText < minPrice.flat) {
-      formAdPrice.setCustomValidity(`Минимальная стоимость квартиры не должна быть меньше ` + minPrice.flat + ` руб`);
-    } else if (adFormType.value === `palace` && inputText < minPrice.palace) {
-      formAdPrice.setCustomValidity(`Минимальная стоимость дворца не должна быть меньше ` + minPrice.palace + ` руб`);
+    } else if (adFormType.value === `house` && inputText < MinPrice.house) {
+      formAdPrice.setCustomValidity(`Минимальная стоимость дома не должна быть меньше ` + MinPrice.house + ` руб`);
+    } else if (adFormType.value === `flat` && inputText < MinPrice.flat) {
+      formAdPrice.setCustomValidity(`Минимальная стоимость квартиры не должна быть меньше ` + MinPrice.flat + ` руб`);
+    } else if (adFormType.value === `palace` && inputText < MinPrice.palace) {
+      formAdPrice.setCustomValidity(`Минимальная стоимость дворца не должна быть меньше ` + MinPrice.palace + ` руб`);
     } else {
-      formAdPrice.setCustomValidity(`Все ок`);
+      formAdPrice.setCustomValidity(``);
     }
+    formAdPrice.reportValidity();
   });
 
-  timein.addEventListener(`change`, function () {
+  timein.addEventListener(`change `, function () {
     matchValue(timein, timeout);
   });
 
-  timeout.addEventListener(`change`, function () {
+  timeout.addEventListener(`change `, function () {
     matchValue(timeout, timein);
   });
 
@@ -68,42 +72,36 @@
     evt.preventDefault();
   });
 
+  const updateRoomsNumberList = () => {
+    guestsAmount.forEach((option) => {
+      option.setAttribute("disabled", true);
+      option.removeAttribute("selected");
+    });
 
-  roomCapacity.addEventListener(`change`, function () {
-    const allowedRooms = Array.from(roomsAmount);
-    let showes = [];
-    let showedRooms = [];
-
-    switch (roomCapacity.value) {
-      case `1`:
-        showedRooms = allowedRooms.filter((r) => r.value >= 1);
-        break;
-
-      case `2`:
-        showedRooms = allowedRooms.filter((r) => r.value >= 2);
-        break;
-
+    const showedRooms = new Set();
+    switch (roomsNumberList.value) {
       case `3`:
-        showedRooms = allowedRooms.filter((r) => r.value >= 3);
+        showedRooms.add('3');
+      case `2`:
+        showedRooms.add('2');
+      case `1`:
+        showedRooms.add('1');
         break;
-
-      case `0`:
-        showedRooms = allowedRooms.filter((r) => r.value === 0);
-        break;
+      case `100`:
+        showedRooms.add('0');
     }
 
-    showes.push(showedRooms);
-    for (let index = 0; index < showes.length; index++) {
-      if (allowedRooms[index] !== showes[index]) {
-        roomsNumberList.removeChild(roomsNumberList[index]);
-      } else {
-        return;
+    guestsAmount.forEach((option) => {
+      if (showedRooms.has(option.value)) {
+        option.removeAttribute("disabled");
       }
-    }
-  });
+    });
 
-  // fieldSets.forEach((field) => {
-  //   field.disabled = true;
-  // });
+    roomCapacity.querySelector('option:not(:disabled)').setAttribute('selected',true);
+  }
+
+  updateRoomsNumberList();
+  roomsNumberList.addEventListener(`change`, updateRoomsNumberList);
+
 
 })();
