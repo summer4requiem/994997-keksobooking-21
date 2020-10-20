@@ -4,11 +4,21 @@
   const mainPin = document.querySelector(`.map__pin--main`);
   const addressInput = document.querySelector(`#address`);
 
-  const allowPinPosition = {
+  const maxCoord = {
     xLeft: 0,
     xRight: 1130,
     yTop: 130,
     yBottom: 630,
+  };
+
+  const checkCoordsLimit = (coords, min, max) => {
+    if (coords > max) {
+      return max;
+    } else if (coords < min) {
+      return min;
+    } else {
+      return coords;
+    }
   };
 
   mainPin.addEventListener(`mousedown`, function (evt) {
@@ -23,6 +33,7 @@
         x: startCoords.x - evtMove.clientX,
         y: startCoords.y - evtMove.clientY
       };
+
       startCoords = {
         x: evtMove.clientX,
         y: evtMove.clientY
@@ -31,8 +42,8 @@
       let left = mainPin.offsetLeft - shiftCoord.x;
       let top = mainPin.offsetTop - shiftCoord.y;
 
-      mainPin.style.left = checkCoordsLimit(left, allowPinPosition.xLeft, allowPinPosition.xRight) + `px`;
-      mainPin.style.top = checkCoordsLimit(top, allowPinPosition.yTop, allowPinPosition.yBottom) + `px`;
+      mainPin.style.left = checkCoordsLimit(left, maxCoord.xLeft, maxCoord.xRight) + `px`;
+      mainPin.style.top = checkCoordsLimit(top, maxCoord.yTop, maxCoord.yBottom) + `px`;
       addressInput.value = `${left}` + `,` + ` ${top}`;
     };
 
@@ -41,15 +52,6 @@
       document.removeEventListener(`mousemove`, onMouseMove);
     };
 
-    const checkCoordsLimit = (coords, min, max) => {
-      if (coords > max) {
-        return max;
-      } else if (coords < min) {
-        return min;
-      } else {
-        return coords;
-      }
-    };
     document.addEventListener(`mouseup`, onMouseUp);
     document.addEventListener(`mousemove`, onMouseMove);
   });

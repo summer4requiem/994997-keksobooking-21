@@ -4,14 +4,23 @@
   const PIN_WIDTH = 40;
   const PIN_HEIGHT = 40;
   const mapPinsContainer = document.querySelector(`.map__pins`);
+  const ESC_CODE = `Escape`;
 
   const createCard = (card) => {
     const cardArticle = cardTemplate.cloneNode(true);
     const closeArticleBtn = cardArticle.querySelector(`.popup__close`);
 
+
     const onPopupClose = () => {
       mapPinsContainer.removeChild(cardArticle);
       closeArticleBtn.removeEventListener(`click`, onPopupClose);
+      closeArticleBtn.removeEventListener(`keydown`, onEscPopupClose);
+    };
+
+    const onEscPopupClose = (eventObj) => {
+      if (eventObj.code === ESC_CODE) {
+        onPopupClose();
+      }
     };
 
     const removeCard = () => {
@@ -30,23 +39,23 @@
     cardArticle.querySelector(`.popup__text--price`).textContent = card.offer.price + `₽/ночь`;
     cardArticle.querySelector(`.popup__type`).textContent = card.offer.type;
     cardArticle.querySelector(`.popup__text--time`).textContent = `Заезд до ` + card.offer.checkin + ` Выезд после` + card.offer.checkout;
-    let featuresList = cardArticle.querySelector(`.popup__features`);
+    const featuresList = cardArticle.querySelector(`.popup__features`);
     cardArticle.querySelector(`.popup__description`).textContent = card.offer.description;
     featuresList.textContent = ``;
 
     card.offer.features.forEach((element) => {
       const fragment = document.createDocumentFragment();
-      let featuresItem = document.createElement(`li`);
+      const featuresItem = document.createElement(`li`);
       featuresItem.classList.add(`popup__feature`, `popup__feature` + `--` + element);
       fragment.appendChild(featuresItem);
       featuresList.appendChild(fragment);
     });
 
-    let photoContainer = cardArticle.querySelector(`.popup__photos`);
+    const photoContainer = cardArticle.querySelector(`.popup__photos`);
     photoContainer.textContent = ``;
 
     card.offer.photos.forEach((p) => {
-      let photo = document.createElement(`img`);
+      const photo = document.createElement(`img`);
       photo.classList.add(`popup__photo`);
       photo.src = p;
       photo.width = PIN_WIDTH;
@@ -55,6 +64,8 @@
     });
 
     closeArticleBtn.addEventListener(`click`, onPopupClose);
+    closeArticleBtn.addEventListener(`keydown`, onEscPopupClose);
+
     return cardArticle;
   };
 

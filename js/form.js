@@ -1,11 +1,10 @@
 'use strict';
 (() => {
   const form = document.querySelector(`.ad-form`);
-  // const formFilters = form.querySelector(`.map__filters`);
   const inputAdTitle = form.querySelector(`#title`);
   const formAdPrice = form.querySelector(`#price`);
-  // const housingType = form.querySelector(`#housing-type`);
-  // const housingPrice = form.querySelector(`#housing-price`);
+  const descriptionField = form.querySelector(`#description`);
+  const formResetBtn = form.querySelector(`.ad-form__reset`);
   const adFormType = form.querySelector(`#type`);
   // const buildingType = form.querySelector(`.ad-form__element`).querySelectorAll(`option`);
   const timein = form.querySelector(`#timein`);
@@ -13,11 +12,13 @@
   const guestsAmount = form.querySelector(`#capacity`).querySelectorAll(`option`);
   const roomsNumberList = form.querySelector(`#room_number`);
   const roomCapacity = form.querySelector(`#capacity`);
+  const fieldSets = document.querySelectorAll(`fieldset`);
+
   const MIN_LENGTH = 30;
   const MAX_LENGTH = 100;
   const MAX_PRICE = 1000000;
 
-  let MinPrice = {
+  let minCost = {
     bungalow: 0,
     house: 5000,
     flat: 1000,
@@ -41,19 +42,18 @@
     inputAdTitle.reportValidity();
   });
 
-
   formAdPrice.addEventListener(`input`, function () {
     let inputText = +formAdPrice.value;
     if (inputText === 0) {
       formAdPrice.setCustomValidity(`Введите число!`);
     } else if (inputText > MAX_PRICE) {
       formAdPrice.setCustomValidity(`Максимальная цена за ночь 1 000 000 !`);
-    } else if (adFormType.value === `house` && inputText < MinPrice.house) {
-      formAdPrice.setCustomValidity(`Минимальная стоимость дома не должна быть меньше ` + MinPrice.house + ` руб`);
-    } else if (adFormType.value === `flat` && inputText < MinPrice.flat) {
-      formAdPrice.setCustomValidity(`Минимальная стоимость квартиры не должна быть меньше ` + MinPrice.flat + ` руб`);
-    } else if (adFormType.value === `palace` && inputText < MinPrice.palace) {
-      formAdPrice.setCustomValidity(`Минимальная стоимость дворца не должна быть меньше ` + MinPrice.palace + ` руб`);
+    } else if (adFormType.value === `house` && inputText < minCost.house) {
+      formAdPrice.setCustomValidity(`Минимальная стоимость дома не должна быть меньше ` + minCost.house + ` руб`);
+    } else if (adFormType.value === `flat` && inputText < minCost.flat) {
+      formAdPrice.setCustomValidity(`Минимальная стоимость квартиры не должна быть меньше ` + minCost.flat + ` руб`);
+    } else if (adFormType.value === `palace` && inputText < minCost.palace) {
+      formAdPrice.setCustomValidity(`Минимальная стоимость дворца не должна быть меньше ` + minCost.palace + ` руб`);
     } else {
       formAdPrice.setCustomValidity(``);
     }
@@ -66,10 +66,6 @@
 
   timeout.addEventListener(`change `, function () {
     matchValue(timeout, timein);
-  });
-
-  form.addEventListener(`submit`, function (evt) {
-    evt.preventDefault();
   });
 
   const updateRoomsNumberList = () => {
@@ -102,8 +98,39 @@
     roomCapacity.querySelector(`option:not(:disabled)`).setAttribute(`selected`, true);
   };
 
+
+  const diactivatePage = () => {
+    map.classList.add(`map--faded`);
+    form.classList.add(`ad-form--disabled`);
+    inputAdTitle.value = ``;
+    descriptionField.value = ``;
+    formAdPrice.value = ``;
+    fieldSets.forEach((field) => {
+      field.disabled = true;
+    });
+  };
+
+  const map = document.querySelector(`.map`);
+  const successTemplate = document.querySelector(`#success`).content.querySelector(`.success`);
+
+  const onSuccessFormSend = () => {
+    const successMessage = successTemplate.cloneNode(true);
+    document.body.appendChild(successMessage);
+    successMessage.addEventListener(`click`, function () {
+      document.body.removeChild(successMessage);
+    });
+    diactivatePage();
+    formResetBtn.removeEventListener(`click`, diactivatePage);
+  };
+
+  formResetBtn.addEventListener(`click`, diactivatePage);
+
+  form.addEventListener(`submit`, function (evt) {
+    evt.preventDefault();
+    // eslint-disable-next-line no-undef
+    xhrModule.upload(new FormData(form), onSuccessFormSend, xhrModule.onError);
+  });
+
   updateRoomsNumberList();
   roomsNumberList.addEventListener(`change`, updateRoomsNumberList);
-
-
 })();

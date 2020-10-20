@@ -17,18 +17,17 @@
     return pinImg;
   };
 
-  const renderPins = () => {
-    const fragment = document.createDocumentFragment();
+  const renderPins = (pins) => {
     // eslint-disable-next-line no-undef
-    const pins = createAdvertisement();
-    for (let index = 0; index < TOTAL_OBJECTS; index++) {
-      fragment.appendChild(createPin(pins[index]));
+    const fragment = document.createDocumentFragment();
+    for (let i = 0; i < TOTAL_OBJECTS; i++) {
+      fragment.appendChild(createPin(pins[i]));
       mapPinsContainer.appendChild(fragment);
     }
   };
 
-  window.render = {
-    pins: renderPins,
+  window.pinModule = {
+    renderPins,
   };
 
 })();
