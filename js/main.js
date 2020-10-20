@@ -1,38 +1,44 @@
 "use strict";
 (() => {
-  const adForm = document.querySelector(`.ad-form`);
+  const form = document.querySelector(`.ad-form`);
   const mainPin = document.querySelector(`.map__pin--main`);
   const fieldSets = document.querySelectorAll(`fieldset`);
-
+  const address = form.querySelector(`#address`);
   const LEFT_MOUSE_CLICK_KEY_CODE = 1;
   const ENTER_CODE = `Enter`;
   const map = document.querySelector(`.map`);
-  adForm.classList.add(`ad-form--disabled`);
+  form.classList.add(`ad-form--disabled`);
 
-  const removeDisablePageAttributes = () => {
+  fieldSets.forEach((field) => {
+    field.disabled = true;
+  });
+
+  const activatePage = () => {
     fieldSets.forEach((field) => {
       field.disabled = false;
       map.classList.remove(`map--faded`);
-      adForm.classList.remove(`ad-form--disabled`);
+      form.classList.remove(`ad-form--disabled`);
     });
     // eslint-disable-next-line no-undef
-    render.pins();
-    mainPin.removeEventListener(`mousedown`, onMouseDownActivatePage);
-    mainPin.removeEventListener(`keydown`, onKeyDownActivatePage);
+    xhrModule.load(pinModule.renderPins);
+    address.value = `${mainPin.clientX}` + `,` + ` ${mainPin.style.top}`;
+    // mainPin.removeEventListener(`mousedown`, onMouseDownActivatePage);
+    // mainPin.removeEventListener(`keydown`, onKeyDownActivatePage);
   };
 
   const onMouseDownActivatePage = (eventObj) => {
     if (eventObj.buttons === LEFT_MOUSE_CLICK_KEY_CODE) {
-      removeDisablePageAttributes(eventObj);
+      // activatePage(eventObj);
+      activatePage();
     }
   };
 
   const onKeyDownActivatePage = (eventObj) => {
     if (eventObj.code === ENTER_CODE) {
-      removeDisablePageAttributes(eventObj);
+      activatePage();
     }
   };
 
   mainPin.addEventListener(`mousedown`, onMouseDownActivatePage);
-  mainPin.addEventListener(`keydown`, onKeyDownActivatePage);
+  mainPin.addEventListener(`click`, onKeyDownActivatePage);
 })();
