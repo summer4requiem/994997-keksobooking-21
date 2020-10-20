@@ -13,6 +13,8 @@
   const roomsNumberList = form.querySelector(`#room_number`);
   const roomCapacity = form.querySelector(`#capacity`);
   const fieldSets = document.querySelectorAll(`fieldset`);
+  const main = document.body.querySelector(`main`);
+
 
   const MIN_LENGTH = 30;
   const MAX_LENGTH = 100;
@@ -115,9 +117,9 @@
 
   const onSuccessFormSend = () => {
     const successMessage = successTemplate.cloneNode(true);
-    document.body.appendChild(successMessage);
+    main.appendChild(successMessage);
     successMessage.addEventListener(`click`, function () {
-      document.body.removeChild(successMessage);
+      main.removeChild(successMessage);
     });
     diactivatePage();
     formResetBtn.removeEventListener(`click`, diactivatePage);
