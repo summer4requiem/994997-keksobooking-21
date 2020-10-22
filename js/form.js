@@ -6,7 +6,6 @@
   const descriptionField = form.querySelector(`#description`);
   const formResetBtn = form.querySelector(`.ad-form__reset`);
   const adFormType = form.querySelector(`#type`);
-  // const buildingType = form.querySelector(`.ad-form__element`).querySelectorAll(`option`);
   const timein = form.querySelector(`#timein`);
   const timeout = form.querySelector(`#timeout`);
   const guestsAmount = form.querySelector(`#capacity`).querySelectorAll(`option`);

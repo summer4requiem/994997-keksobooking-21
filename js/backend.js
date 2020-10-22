@@ -13,7 +13,6 @@
   const GET_URL = `https://21.javascript.pages.academy/keksobooking/data`;
   const POST_URL = `https://ptsv2.com/t/l5tan-1603026502/post`;
 
-
   const sendRequest = (methood, url, onSuccess, onError) => {
     let xhr = new XMLHttpRequest();
     xhr.responseType = `json`;
@@ -34,7 +33,6 @@
     xhr.addEventListener(`timeout`, function () {
       onError(`Запрос не успел выполниться за ` + xhr.timeout + ` мс`);
     });
-
 
     xhr.timeout = TIME_OUT;
     return xhr;
