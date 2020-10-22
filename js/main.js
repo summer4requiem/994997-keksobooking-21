@@ -13,14 +13,17 @@
     field.disabled = true;
   });
 
+
   const activatePage = () => {
     fieldSets.forEach((field) => {
       field.disabled = false;
       map.classList.remove(`map--faded`);
       form.classList.remove(`ad-form--disabled`);
     });
+
     // eslint-disable-next-line no-undef
-    xhrModule.load(pinModule.renderPins);
+    // pinModule.renderPins(pinsArray);
+    // xhrModule.load(pinModule.renderPins);
     address.value = `${mainPin.clientX}` + `,` + ` ${mainPin.style.top}`;
     // mainPin.removeEventListener(`mousedown`, onMouseDownActivatePage);
     // mainPin.removeEventListener(`keydown`, onKeyDownActivatePage);
@@ -28,7 +31,6 @@
 
   const onMouseDownActivatePage = (eventObj) => {
     if (eventObj.buttons === LEFT_MOUSE_CLICK_KEY_CODE) {
-      // activatePage(eventObj);
       activatePage();
     }
   };
