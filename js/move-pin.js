@@ -5,10 +5,10 @@
   const addressInput = document.querySelector(`#address`);
 
   const maxCoord = {
-    xLeft: 0,
-    xRight: 1130,
-    yTop: 130,
-    yBottom: 630,
+    xLeftMin: Math.floor(0 - window.pinSizeMiddle.left),
+    xRightMin: Math.floor(1135 + window.pinSizeMiddle.top),
+    yTopMax: 130 - 54,
+    yBottomMax: 576,
   };
 
   const checkCoordsLimit = (coords, min, max) => {
@@ -25,26 +25,26 @@
     evt.preventDefault();
     let startCoords = {
       x: evt.clientX,
-      y: evt.clientY
+      y: evt.clientY,
     };
 
     const onMouseMove = (evtMove) => {
       const shiftCoord = {
         x: startCoords.x - evtMove.clientX,
-        y: startCoords.y - evtMove.clientY
+        y: startCoords.y - evtMove.clientY,
       };
 
       startCoords = {
         x: evtMove.clientX,
-        y: evtMove.clientY
+        y: evtMove.clientY,
       };
 
       let left = mainPin.offsetLeft - shiftCoord.x;
       let top = mainPin.offsetTop - shiftCoord.y;
 
-      mainPin.style.left = checkCoordsLimit(left, maxCoord.xLeft, maxCoord.xRight) + `px`;
-      mainPin.style.top = checkCoordsLimit(top, maxCoord.yTop, maxCoord.yBottom) + `px`;
-      addressInput.value = `${left}` + `,` + ` ${top}`;
+      mainPin.style.left = checkCoordsLimit(left, maxCoord.xLeftMin, maxCoord.xRightMin) + `px`;
+      mainPin.style.top = checkCoordsLimit(top, maxCoord.yTopMax, maxCoord.yBottomMax) + `px`;
+      addressInput.value = (left + window.pinSizeMiddle.left) + `, ` + (top + window.pinSizeMiddle.top + window.pinSize.sharpEnd);
     };
 
     const onMouseUp = () => {

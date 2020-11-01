@@ -1,28 +1,26 @@
 "use strict";
 (() => {
-  // const POST_URL = `https://21.javascript.pages.academy/keksobooking`;
-  // врмененный адрес, так как с акдемии выдает ошибку 400 Bad Request;
-  const ESC_CODE = `Escape`;
   const main = document.body.querySelector(`main`);
   const errorTemplate = document.querySelector(`#error`).content.querySelector(`.error`);
   const errorPopup = errorTemplate.cloneNode(true);
   const errorBtn = errorPopup.querySelector(`.error__button`);
+  const errorLoadTemplate = document.querySelector(`#load-error`).content.querySelector(`.load-error`);
+  const errorLoadPopUp = errorLoadTemplate.cloneNode(true);
+  const errorLoadBtn = errorLoadPopUp.querySelector(`.error__button`);
   const TIME_OUT = 1000;
-  const SUCCESS_CODE = 200;
-
+  const POST_URL = `https://21.javascript.pages.academy/keksobooking`;
   const GET_URL = `https://21.javascript.pages.academy/keksobooking/data`;
-  const POST_URL = `https://ptsv2.com/t/l5tan-1603026502/post`;
 
-  const sendRequest = (methood, url, onSuccess, onError) => {
+  const sendRequest = (method, url, onSuccess, onError) => {
     let xhr = new XMLHttpRequest();
     xhr.responseType = `json`;
-    xhr.open(methood, url);
+    xhr.open(method, url);
 
     xhr.addEventListener(`load`, function () {
-      if (xhr.status === SUCCESS_CODE) {
+      if (xhr.status === window.code.SUCCESS) {
         onSuccess(xhr.response);
       } else {
-        onError(`Не удалось загрузить данные`);
+        onError(`Не удалось отправить данные`);
       }
     });
 
@@ -38,7 +36,7 @@
     return xhr;
   };
 
-  const onError = (text) => {
+  const onUploadDataErrorShowMessage = (text) => {
     errorPopup.querySelector(`.error__message`).textContent = text;
     main.appendChild(errorPopup);
     errorBtn.addEventListener(`click`, onErrorBtnClick);
@@ -51,25 +49,43 @@
     errorBtn.removeEventListener(`keydown`, onErrorBtnKeyDown);
   };
 
-  const onErrorBtnKeyDown = (eventObj) => {
-    if (eventObj.code === ESC_CODE) {
+  const onErrorBtnKeyDown = (evt) => {
+    if (evt.code === window.code.ESC) {
       onErrorBtnClick();
     }
   };
 
+  const onLoadDataErrorShowMessage = () => {
+    main.appendChild(errorLoadPopUp);
+    errorLoadBtn.addEventListener(`click`, onErrorLoadBtnClick);
+    errorLoadBtn.addEventListener(`keydown`, onErrorLoadBtnKeyDown);
+  };
+
+  const onErrorLoadBtnClick = () => {
+    main.removeChild(errorLoadPopUp);
+    errorLoadBtn.removeEventListener(`click`, onErrorLoadBtnClick);
+    errorLoadBtn.removeEventListener(`keydown`, onErrorLoadBtnKeyDown);
+  };
+
+  const onErrorLoadBtnKeyDown = (evt) => {
+    if (evt.code === window.code.ESC) {
+      onErrorLoadBtnClick();
+    }
+  };
+
   const load = (onSuccessDataReceived) => {
-    const xhr = sendRequest(`GET`, GET_URL, onSuccessDataReceived, onError);
+    const xhr = sendRequest(`GET`, GET_URL, onSuccessDataReceived, onLoadDataErrorShowMessage);
     xhr.send();
   };
 
   const upload = (formData, onSuccessFormSend) => {
-    const xhr = sendRequest(`POST`, POST_URL, onSuccessFormSend, onError);
+    const xhr = sendRequest(`POST`, POST_URL, onSuccessFormSend, onUploadDataErrorShowMessage);
     xhr.send(formData);
   };
 
   window.xhrModule = {
     load,
     upload,
-    onError
+    onUploadDataErrorShowMessage,
   };
 })();

@@ -37,10 +37,9 @@
           </svg>
         </button>
       </div>
-
       <!-- Фильтрация объявлений -->
       <div class="map__filters-container">
-        <form action="https://javascript.pages.academy/code-and-magick" class="map__filters" autocomplete="off"
+        <form action="https://21.javascript.pages.academy/keksobooking" enctype="multipart/form-data" class="map__filters" autocomplete="off"
           method="POST">
           <select name="housing-type" id="housing-type" class="map__filter">
             <option value="any" selected>Любой тип жилья</option>
@@ -267,12 +266,18 @@
       <button class="error__button">Попробовать снова</button>
     </div>
   </template>
-  <script src="./js/mock.js"></script>
+  <template id="load-error">
+    <div class="load-error">
+      <p class="error__message">Ошибка загрузки данных,<br> попробуйте перезагрузить страницу или дождаться ответа от сервера</p>
+      <button class="error__button">закрыть</button>
+    </div>
+  </template>
   <script src="./js/backend.js"></script>
+  <script src="./js/debounce.js"></script>
   <script src="./js/pin.js"></script>
   <script src="./js/filter.js"></script>
-  <script src="./js/utills.js"></script>
-  <script src="./js/main.js"></script>
+  <script src="./js/utils.js"></script>
+  <script src="./js/pageModeModule.js"></script>
   <script src="./js/move-pin.js"></script>
   <script src="./js/card.js"></script>
   <script src="./js/form.js"></script>

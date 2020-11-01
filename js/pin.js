@@ -1,4 +1,6 @@
 "use strict";
+const MAX_PINS_AMOUNT = 5;
+
 (() => {
   const pinTemplate = document.querySelector(`#pin`).content.querySelector(`.map__pin`);
   const mapPinsContainer = document.querySelector(`.map__pins`);
@@ -10,16 +12,19 @@
     pinImg.style.alt = pin.description;
 
     pinImg.addEventListener(`click`, function () {
-      // eslint-disable-next-line no-undef
-      mapPinsContainer.appendChild(cardModule.createCard(pin));
+      let activeBtn = mapPinsContainer.querySelector(`.map__pin--active`);
+      if (activeBtn) {
+        activeBtn.classList.remove(`map__pin--active`);
+      }
+      pinImg.classList.add(`map__pin--active`);
+      mapPinsContainer.appendChild(window.cardModule.createCard(pin));
     });
     return pinImg;
   };
 
   const renderPins = (pins) => {
-    // eslint-disable-next-line no-undef
     const fragment = document.createDocumentFragment();
-    for (let i = 0; i < pins.length; i++) {
+    for (let i = 0; pins.length > MAX_PINS_AMOUNT ? i < MAX_PINS_AMOUNT : i < pins.length; i++) {
       fragment.appendChild(createPin(pins[i]));
       mapPinsContainer.appendChild(fragment);
     }
