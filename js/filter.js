@@ -1,58 +1,73 @@
 "use strict";
 (() => {
-  const housType = document.body.querySelector(`#housing-type`);
+  const allFilters = document.body.querySelectorAll(`.map__filter`);
+  const houseFatures = document.querySelectorAll(`.map__checkbox`);
+  const mapFilters = document.querySelector(`.map__filters`);
 
   const getPinsArray = (data) => {
     window.pinsArray = data;
   };
 
-  window.updatePins = () => {
-    const pins = document.querySelectorAll(`.map__pin:not(.map__pin--main)`);
-    pins.forEach((p) => {
-      p.remove();
-    });
+  const priceLimit = {
+    low: 10000,
+    high: 50000,
   };
 
-  // eslint-disable-next-line no-undef
-  xhrModule.load(getPinsArray);
+  const filterParams = (filterArray) => {
+    // saved all the filters from form
+    let type = filterArray[0];
+    let price = filterArray[1];
+    let rooms = filterArray[2];
+    let guests = filterArray[3];
+    let features = filterArray[4];
+    let newPins = window.pinsArray.concat();
 
-  const filterByType = (filerName) => {
-    // eslint-disable-next-line no-undef
-    updatePins();
-    const selectedFilter = [];
-    let item = [];
+    window.updatePins();
+    window.cardModule.isCardExist();
 
-    switch (filerName) {
-
-      case `bungalow`:
-        // eslint-disable-next-line no-undef
-        item = pinsArray.filter((p) => p.offer.type === `bungalow`);
-        selectedFilter.push(item);
-        break;
-      case `palace`:
-        // eslint-disable-next-line no-undef
-        item = pinsArray.filter((p) => p.offer.type === `palace`);
-        selectedFilter.push(item);
-        break;
-      case `flat`:
-        // eslint-disable-next-line no-undef
-        item = pinsArray.filter((p) => p.offer.type === `flat`);
-        selectedFilter.push(item);
-        break;
-      case `house`:
-        // eslint-disable-next-line no-undef
-        item = pinsArray.filter((p) => p.offer.type === `house`);
-        selectedFilter.push(item);
-        break;
-      case `any`:
-        // eslint-disable-next-line no-undef
-        selectedFilter.push(pinsArray);
+    if (type !== `any`) {
+      newPins = window.pinsArray.filter((pin) => pin.offer.type === type);
     }
-    // eslint-disable-next-line no-undef
-    pinModule.renderPins(selectedFilter[0]);
+    if (price !== `any`) {
+      switch (price) {
+        case `low`:
+          newPins = newPins.filter((pin) => pin.offer.price <= priceLimit.low);
+          break;
+        case `high`:
+          newPins = newPins.filter((pin) => pin.offer.price >= priceLimit.high);
+          break;
+        default:
+          newPins = newPins.filter((pin) => pin.offer.price > priceLimit.low && pin.offer.price < priceLimit.high);
+      }
+    }
+    if (rooms !== `any`) {
+      newPins = newPins.filter((pin) => pin.offer.rooms.toString() === rooms);
+    }
+    if (guests !== `any`) {
+      newPins = newPins.filter((pin) => pin.offer.guests.toString() === guests);
+    }
+    if (features.length) {
+      for (let i = 0; i < features.length; i++) {
+        newPins = newPins.filter((pin) => pin.offer.features.indexOf(features[i]) === -1 ? null : pin.offer.guests);
+      }
+    }
+    window.pinModule.renderPins(newPins);
   };
 
-  housType.addEventListener(`change`, function () {
-    filterByType(housType.value);
+  mapFilters.addEventListener(`change`, function () {
+    let filter = [];
+    let filterFeatures = [];
+    allFilters.forEach((el) => {
+      filter.push(el.value);
+    });
+
+    houseFatures.forEach((f) => {
+      if (f.checked) {
+        filterFeatures.push(f.value);
+      }
+    });
+    filter.push(filterFeatures);
+    filterParams(filter);
   });
+  window.xhrModule.load(getPinsArray);
 })();
