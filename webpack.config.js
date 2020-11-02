@@ -10,6 +10,7 @@ module.exports = {
         "./js/move-pin.js",
         "./js/card.js",
         "./js/form.js",
+        "./js/form-photo.js",
     ],
 
     output: {
@@ -17,5 +18,5 @@ module.exports = {
         path: path.resolve(__dirname),
         iife: true
     },
-    devtool: false
+    // devtool: false
 };

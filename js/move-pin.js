@@ -1,14 +1,15 @@
 'use strict';
-
+(() => {})();
 const mainPin = document.querySelector(`.map__pin--main`);
 const addressInput = document.querySelector(`#address`);
 
 const maxCoord = {
   xLeftMin: Math.floor(0 - window.pinSizeMiddle.left),
   xRightMin: Math.floor(1135 + window.pinSizeMiddle.top),
-  yTopMax: 130 - 54,
-  yBottomMax: 576,
+  yTopMax: 130 - (window.pinSizeMiddle.left + window.pinSize.sharpEnd),
+  yBottomMax: 630 - (window.pinSizeMiddle.left + window.pinSize.sharpEnd),
 };
+
 
 const checkCoordsLimit = (coords, min, max) => {
   if (coords > max) {
