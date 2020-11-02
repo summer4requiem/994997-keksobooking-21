@@ -1,5 +1,5 @@
 'use strict';
-
+(() => {})();
 const form = document.querySelector(`.ad-form`);
 const inputAdTitle = form.querySelector(`#title`);
 const formAdPrice = form.querySelector(`#price`);
