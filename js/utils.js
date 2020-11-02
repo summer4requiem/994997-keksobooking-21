@@ -3,14 +3,14 @@
   const mainPin = document.querySelector(`.map__pin--main`);
 
   window.pinSize = {
-    width: mainPin.offsetWidth, // 65
-    height: mainPin.offsetHeight, // 65
+    width: mainPin.offsetWidth,
+    height: mainPin.offsetHeight,
     sharpEnd: 22,
   };
 
   window.pinSizeMiddle = {
-    left: Math.floor(window.pinSize.width / 2), // 33
-    top: Math.floor(window.pinSize.height / 2), // 33
+    left: Math.floor(window.pinSize.width / 2),
+    top: Math.floor(window.pinSize.height / 2),
   };
 
   window.pinAddres = {
