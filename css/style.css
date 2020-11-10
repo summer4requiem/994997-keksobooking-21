@@ -799,8 +799,11 @@ fieldset {
   margin-bottom: 10px;
   border-radius: 5px;
   margin-right: 10px;
+<<<<<<< HEAD
   width: 70px;
   height: 70px;
+=======
+>>>>>>> 0f94dc650724c732ef94629ab6523ec092bff4ed
 }
 .ad-form__element--submit {
   -ms-flex-preferred-size: 100%;

@@ -142,7 +142,7 @@ const resetFormPhotos = () => {
   }
 };
 
-const deactivatedPage = () => {
+const onDeactivatedPage = () => {
   map.classList.add(`map--faded`);
   form.classList.add(`ad-form--disabled`);
   inputAdTitle.value = ``;
@@ -173,10 +173,9 @@ const onSuccessFormSend = () => {
   main.appendChild(successMessage);
   // for Firefox automaticly focusing on successMessage and close
   successMessage.focus();
-  document.body.insertAdjacentElement(`afterbegin`, successMessage);
   successMessage.addEventListener(`click`, onClickSuccessFormClose);
   document.addEventListener(`keydown`, onEscSuccessFormClose);
-  deactivatedPage();
+  onDeactivatedPage();
 };
 
 form.addEventListener(`submit`, (evt) => {
@@ -186,6 +185,6 @@ form.addEventListener(`submit`, (evt) => {
 
 onUpdateRoomsNumberList();
 onUpdatePricePlaceHolder();
-formResetBtn.addEventListener(`click`, deactivatedPage);
+formResetBtn.addEventListener(`click`, onDeactivatedPage);
 adFormType.addEventListener(`change`, onUpdatePricePlaceHolder);
 roomsNumberList.addEventListener(`change`, onUpdateRoomsNumberList);

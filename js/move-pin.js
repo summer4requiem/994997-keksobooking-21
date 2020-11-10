@@ -9,6 +9,7 @@ const maxCoord = {
   yBottomMax: 630 - (window.pinSizeMiddle.left + window.pinSize.sharpEnd),
 };
 
+
 const checkCoordsLimit = (coords, min, max) => {
   if (coords > max) {
     return max;

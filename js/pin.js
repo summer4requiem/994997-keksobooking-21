@@ -32,3 +32,4 @@ const renderPins = (pins) => {
 window.pinModule = {
   renderPins,
 };
+
