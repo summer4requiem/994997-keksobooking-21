@@ -1,6 +1,6 @@
 "use strict";
-const MAX_PINS_AMOUNT = 5;
 
+const MAX_PINS_AMOUNT = 5;
 const pinTemplate = document.querySelector(`#pin`).content.querySelector(`.map__pin`);
 const mapPinsContainer = document.querySelector(`.map__pins`);
 
@@ -10,7 +10,7 @@ const createPin = (pin) => {
   pinImg.querySelector(`img`).src = pin.author.avatar;
   pinImg.style.alt = pin.description;
 
-  pinImg.addEventListener(`click`, function () {
+  pinImg.addEventListener(`click`, () => {
     let activeBtn = mapPinsContainer.querySelector(`.map__pin--active`);
     if (activeBtn) {
       activeBtn.classList.remove(`map__pin--active`);

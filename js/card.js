@@ -3,9 +3,11 @@
 const mapPinsContainer = document.querySelector(`.map__pins`);
 const cardTemplate = document.querySelector(`#card`).content.querySelector(`.map__card`);
 const cardArticle = cardTemplate.cloneNode(true);
+const featuresPopUp = cardArticle.querySelector(`.popup__features`);
 const cardCloseBtn = cardArticle.querySelector(`.popup__close`);
 const PHOTO_WIDTH = 40;
 const PHOTO_HEIGHT = 45;
+
 
 const createPhotos = (img) => {
   const photoContainer = cardArticle.querySelector(`.popup__photos`);
@@ -26,24 +28,23 @@ const createPhotos = (img) => {
 };
 
 const createFeatures = (feature) => {
-  const featuresList = cardArticle.querySelector(`.popup__features`);
   if (!feature.length) {
-    hideField(featuresList);
+    hideField(featuresPopUp);
   } else {
-    featuresList.textContent = ``;
+    featuresPopUp.textContent = ``;
     feature.forEach((element) => {
       const fragment = document.createDocumentFragment();
       const featuresItem = document.createElement(`li`);
-      featuresItem.classList.add(`popup__feature`, `popup__feature` + `--` + element);
+      featuresItem.classList.add(`popup__feature`, `popup__feature--${element}`);
       fragment.appendChild(featuresItem);
-      featuresList.appendChild(fragment);
-      featuresList.classList.remove(`visually-hidden`);
+      featuresPopUp.appendChild(fragment);
+      featuresPopUp.classList.remove(`visually-hidden`);
     });
   }
 };
 
 const isEmptyField = (cardField, content) => {
-  let field = cardArticle.querySelector(cardField);
+  const field = cardArticle.querySelector(cardField);
   if (content) {
     field.textContent = content;
   } else {
@@ -68,7 +69,7 @@ const onEscCardClose = (evt) => {
 };
 
 const isCardExist = () => {
-  let popup = mapPinsContainer.querySelector(`.popup`);
+  const popup = mapPinsContainer.querySelector(`.popup`);
   if (popup) {
     cardCloseBtn.removeEventListener(`click`, onCardClose);
     cardCloseBtn.removeEventListener(`keydown`, onEscCardClose);
@@ -78,29 +79,27 @@ const isCardExist = () => {
 
 const lastLetter = (num, word1, word2, word3) => {
   const lastDigit = num % 10;
-
   const lastSecondDigit = Math.floor((num % 100) / 10);
 
   if (!(lastSecondDigit === 1)) {
     if (lastDigit === 1) {
-      return num + ` ` + word1;
+      return `${num} ${word1}`;
     } else if (lastDigit > 1 && lastDigit < 5) {
-      return num + ` ` + word2;
+      return `${num} ${word2}`;
     }
   }
-  return num + ` ` + word3;
+  return `${num} ${word3}`;
 };
 
 const createCard = (card) => {
-  isCardExist();
   cardArticle.querySelector(`.popup__avatar`).src = card.author.avatar.length ? card.author.avatar : `default.png`;
   isEmptyField(`.popup__title`, card.offer.title);
   isEmptyField(`.popup__text--address`, card.offer.address);
-  isEmptyField(`.popup__text--price`, card.offer.price + `₽/ночь`);
+  isEmptyField(`.popup__text--price`, `${card.offer.price} ₽/ночь`);
   isEmptyField(`.popup__type`, card.offer.type);
-  isEmptyField(`.popup__text--time`, `Заезд до ` + card.offer.checkin + ` Выезд после ` + card.offer.checkout);
+  isEmptyField(`.popup__text--time`, `Заезд до ${card.offer.checkin} Выезд после ${card.offer.checkout}`);
   isEmptyField(`.popup__description`, card.offer.description);
-  isEmptyField(`.popup__text--capacity`, lastLetter(card.offer.rooms, `комната`, `комнаты`, `комнат`) + ` для ` + lastLetter(card.offer.guests, `гостя`, `гостей`, `гостей`));
+  isEmptyField(`.popup__text--capacity`, `${lastLetter(card.offer.rooms, `комната`, `комнаты`, `комнат`)} для ${lastLetter(card.offer.guests, `гостя`, `гостей`, `гостей`)}`);
   createFeatures(card.offer.features);
   createPhotos(card.offer.photos);
   cardCloseBtn.addEventListener(`click`, onCardClose);
@@ -112,5 +111,4 @@ const createCard = (card) => {
 window.cardModule = {
   createCard,
   isCardExist,
-
 };

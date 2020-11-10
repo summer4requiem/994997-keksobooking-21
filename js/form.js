@@ -1,6 +1,13 @@
 'use strict';
 
+const MIN_LENGTH = 30;
+const MAX_LENGTH = 100;
+const MAX_PRICE = 1000000;
+const DEFAULT_IMG = `http://127.0.0.1:5500/img/muffin-grey.svg`;
+
 const form = document.querySelector(`.ad-form`);
+const formAvatar = document.querySelector(`.ad-form-header__preview img`);
+const houseImg = document.querySelector(`.ad-form__photo`);
 const inputAdTitle = form.querySelector(`#title`);
 const formAdPrice = form.querySelector(`#price`);
 const descriptionField = form.querySelector(`#description`);
@@ -17,11 +24,8 @@ const houseType = document.body.querySelector(`#housing-type`);
 const map = document.querySelector(`.map`);
 const successTemplate = document.querySelector(`#success`).content.querySelector(`.success`);
 const successMessage = successTemplate.cloneNode(true);
-const MIN_LENGTH = 30;
-const MAX_LENGTH = 100;
-const MAX_PRICE = 1000000;
 
-let minCost = {
+const minCost = {
   bungalow: 0,
   house: 5000,
   flat: 1000,
@@ -32,21 +36,21 @@ const matchValue = (first, second) => {
   second.value = first.value;
 };
 
-inputAdTitle.addEventListener(`input`, function () {
-  let inputText = inputAdTitle.value.trim();
+inputAdTitle.addEventListener(`input`, () => {
+  const inputText = inputAdTitle.value.trim();
   inputAdTitle.value = inputText;
-  let restLetters = inputAdTitle.minLength - inputText.length;
+  const restLetters = inputAdTitle.minLength - inputText.length;
   if (inputText.length < MIN_LENGTH) {
-    inputAdTitle.setCustomValidity(`Минимальное количество символов: ` + inputAdTitle.minLength + ` осталось: ` + restLetters);
+    inputAdTitle.setCustomValidity(`Минимальное количество символов: ${inputAdTitle.minLength} осталось: ${restLetters}`);
   } else if (inputText.length === MAX_LENGTH) {
-    inputAdTitle.setCustomValidity(`Максимальное количество символов: ` + inputAdTitle.maxLength);
+    inputAdTitle.setCustomValidity(`Максимальное количество символов: ${inputAdTitle.maxLength}`);
   } else {
     inputAdTitle.setCustomValidity(``);
   }
   inputAdTitle.reportValidity();
 });
 
-const updatePricePlaceHolder = () => {
+const onUpdatePricePlaceHolder = () => {
   switch (adFormType.value) {
     case `house`:
       formAdPrice.placeholder = minCost.house;
@@ -70,35 +74,37 @@ const onFieldInvalid = (field) => {
 formAdPrice.addEventListener(`invalid`, onFieldInvalid(formAdPrice));
 inputAdTitle.addEventListener(`invalid`, onFieldInvalid(inputAdTitle));
 
-formAdPrice.addEventListener(`input`, function () {
-  let inputText = +formAdPrice.value;
+formAdPrice.addEventListener(`input`, () => {
+  const inputText = +formAdPrice.value;
+  let message;
   if (inputText === 0) {
-    formAdPrice.setCustomValidity(`Введите число!`);
+    message = `Введите число!`;
   } else if (inputText > MAX_PRICE) {
-    formAdPrice.setCustomValidity(`Максимальная цена за ночь 1 000 000 !`);
+    message = `Максимальная цена за ночь 1 000 000 !`;
   } else if (adFormType.value === `house` && inputText < minCost.house) {
-    formAdPrice.setCustomValidity(`Минимальная стоимость дома не должна быть меньше ` + minCost.house + ` руб`);
+    message = `Минимальная стоимость дома не должна быть меньше ${minCost.house} руб`;
   } else if (adFormType.value === `flat` && inputText < minCost.flat) {
-    formAdPrice.setCustomValidity(`Минимальная стоимость квартиры не должна быть меньше ` + minCost.flat + ` руб`);
+    message = `Минимальная стоимость квартиры не должна быть меньше ${minCost.flat} руб`;
   } else if (adFormType.value === `palace` && inputText < minCost.palace) {
-    formAdPrice.setCustomValidity(`Минимальная стоимость дворца не должна быть меньше ` + minCost.palace + ` руб`);
+    message = `Минимальная стоимость дворца не должна быть меньше ${minCost.palace} руб`;
   } else if (adFormType.value === `bungalow` && inputText < minCost.bungalow) {
-    formAdPrice.setCustomValidity(`Минимальная стоимость бунгало не может быть меньше ` + minCost.bungalow + ` руб`);
+    message = `Минимальная стоимость бунгало не может быть меньше ${minCost.bungalow} руб`;
   } else {
-    formAdPrice.setCustomValidity(``);
+    message = ``;
   }
+  formAdPrice.setCustomValidity(message);
   formAdPrice.reportValidity();
 });
 
-timein.addEventListener(`change`, function () {
+timein.addEventListener(`change`, () => {
   matchValue(timein, timeout);
 });
 
-timeout.addEventListener(`change`, function () {
+timeout.addEventListener(`change`, () => {
   matchValue(timeout, timein);
 });
 
-const updateRoomsNumberList = () => {
+const onUpdateRoomsNumberList = () => {
   guestsAmount.forEach((option) => {
     option.setAttribute(`disabled`, `true`);
     option.removeAttribute(`selected`);
@@ -128,6 +134,14 @@ const updateRoomsNumberList = () => {
   roomCapacity.querySelector(`option:not(:disabled)`).setAttribute(`selected`, `true`);
 };
 
+const resetFormPhotos = () => {
+  houseImg.innerHtml = ``;
+  formAvatar.src = DEFAULT_IMG;
+  while (houseImg.firstChild) {
+    houseImg.removeChild(houseImg.lastChild);
+  }
+};
+
 const deactivatedPage = () => {
   map.classList.add(`map--faded`);
   form.classList.add(`ad-form--disabled`);
@@ -136,16 +150,18 @@ const deactivatedPage = () => {
   formAdPrice.value = ``;
   houseType.value = `any`;
   window.updatePins();
+  resetFormPhotos();
   fieldSets.forEach((field) => {
     field.disabled = true;
   });
+  window.pageUtilsModule.addMainPinListeners();
 };
 
 const onEscSuccessFormClose = (evt) => {
-  if (evt.key === window.code.ESC) {
-    successMessage.remove();
+  if (evt.code === `Escape`) {
+    onClickSuccessFormClose();
+    document.removeEventListener(`keydown`, onEscSuccessFormClose);
   }
-  document.removeEventListener(`keydown`, onEscSuccessFormClose);
 };
 
 const onClickSuccessFormClose = () => {
@@ -155,21 +171,21 @@ const onClickSuccessFormClose = () => {
 
 const onSuccessFormSend = () => {
   main.appendChild(successMessage);
+  // for Firefox automaticly focusing on successMessage and close
+  successMessage.focus();
+  document.body.insertAdjacentElement(`afterbegin`, successMessage);
   successMessage.addEventListener(`click`, onClickSuccessFormClose);
   document.addEventListener(`keydown`, onEscSuccessFormClose);
-  formResetBtn.removeEventListener(`click`, deactivatedPage);
   deactivatedPage();
-  window.pageUtilsModule.addMainPinListeners();
 };
 
-formResetBtn.addEventListener(`click`, deactivatedPage);
-
-form.addEventListener(`submit`, function (evt) {
+form.addEventListener(`submit`, (evt) => {
   evt.preventDefault();
   window.xhrModule.upload(new FormData(form), onSuccessFormSend);
 });
 
-updateRoomsNumberList();
-updatePricePlaceHolder();
-adFormType.addEventListener(`change`, updatePricePlaceHolder);
-roomsNumberList.addEventListener(`change`, updateRoomsNumberList);
+onUpdateRoomsNumberList();
+onUpdatePricePlaceHolder();
+formResetBtn.addEventListener(`click`, deactivatedPage);
+adFormType.addEventListener(`change`, onUpdatePricePlaceHolder);
+roomsNumberList.addEventListener(`change`, onUpdateRoomsNumberList);

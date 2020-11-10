@@ -1,6 +1,6 @@
 "use strict";
 
-const INTERVAL = 300; // ms
+const INTERVAL = 500; // ms
 
 let lastTimeOut = null;
 

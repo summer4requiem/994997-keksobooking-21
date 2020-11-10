@@ -1,4 +1,5 @@
 "use strict";
+const TIME_OUT = 1000;
 
 const main = document.body.querySelector(`main`);
 const errorTemplate = document.querySelector(`#error`).content.querySelector(`.error`);
@@ -7,16 +8,15 @@ const errorBtn = errorPopup.querySelector(`.error__button`);
 const errorLoadTemplate = document.querySelector(`#load-error`).content.querySelector(`.load-error`);
 const errorLoadPopUp = errorLoadTemplate.cloneNode(true);
 const errorLoadBtn = errorLoadPopUp.querySelector(`.error__button`);
-const TIME_OUT = 1000;
 const POST_URL = `https://21.javascript.pages.academy/keksobooking`;
 const GET_URL = `https://21.javascript.pages.academy/keksobooking/data`;
 
 const sendRequest = (method, url, onSuccess, onError) => {
-  let xhr = new XMLHttpRequest();
+  const xhr = new XMLHttpRequest();
   xhr.responseType = `json`;
   xhr.open(method, url);
 
-  xhr.addEventListener(`load`, function () {
+  xhr.addEventListener(`load`, () => {
     if (xhr.status === window.code.SUCCESS) {
       onSuccess(xhr.response);
     } else {
@@ -24,12 +24,12 @@ const sendRequest = (method, url, onSuccess, onError) => {
     }
   });
 
-  xhr.addEventListener(`error`, function () {
+  xhr.addEventListener(`error`, () => {
     onError(`Ошибка загрузки данных`);
   });
 
-  xhr.addEventListener(`timeout`, function () {
-    onError(`Запрос не успел выполниться за ` + xhr.timeout + ` мс`);
+  xhr.addEventListener(`timeout`, () => {
+    onError(`Запрос не успел выполниться за ${xhr.timeout} мс`);
   });
 
   xhr.timeout = TIME_OUT;

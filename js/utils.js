@@ -26,6 +26,21 @@ window.updatePins = () => {
   });
 };
 
+window.PriceLimit = {
+  low: {
+    min: 0,
+    max: 10000
+  },
+  middle: {
+    min: 10000,
+    max: 50000
+  },
+  hight: {
+    min: 50000,
+    max: Infinity
+  }
+};
+
 window.code = {
   ENTER: `Enter`,
   ESC: `Escape`,

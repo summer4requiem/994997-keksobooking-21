@@ -12,7 +12,7 @@ fieldSets.forEach((field) => {
   field.disabled = true;
 });
 
-address.value = window.pinAddres.x + `, ` + window.pinAddres.defaultY;
+address.value = `${window.pinAddres.x} ${window.pinAddres.defaultY}`;
 
 const activatePage = () => {
   fieldSets.forEach((field) => {
@@ -21,7 +21,7 @@ const activatePage = () => {
     form.classList.remove(`ad-form--disabled`);
   });
   window.pinModule.renderPins(window.pinsArray);
-  address.value = window.pinAddres.x + `, ` + window.pinAddres.y;
+  address.value = `${window.pinAddres.x}, ${window.pinAddres.y}`;
 };
 
 const removePinListeners = () => {
