@@ -6,6 +6,8 @@ const MAX_PRICE = 1000000;
 const DEFAULT_IMG = `http://127.0.0.1:5500/img/muffin-grey.svg`;
 
 const form = document.querySelector(`.ad-form`);
+const formFilters = document.querySelector(`.map__filters`);
+
 const formAvatar = document.querySelector(`.ad-form-header__preview img`);
 const houseImg = document.querySelector(`.ad-form__photo`);
 const inputAdTitle = form.querySelector(`#title`);
@@ -145,6 +147,7 @@ const resetFormPhotos = () => {
 const onDeactivatedPage = () => {
   map.classList.add(`map--faded`);
   form.classList.add(`ad-form--disabled`);
+  formFilters.classList.add(`ad-form--disabled`);
   inputAdTitle.value = ``;
   descriptionField.value = ``;
   formAdPrice.value = ``;
@@ -155,6 +158,7 @@ const onDeactivatedPage = () => {
     field.disabled = true;
   });
   window.pageUtilsModule.addMainPinListeners();
+  window.setDefaultPinPosition();
 };
 
 const onEscSuccessFormClose = (evt) => {

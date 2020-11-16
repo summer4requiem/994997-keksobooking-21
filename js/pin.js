@@ -1,6 +1,7 @@
 "use strict";
 
 const MAX_PINS_AMOUNT = 5;
+
 const pinTemplate = document.querySelector(`#pin`).content.querySelector(`.map__pin`);
 const mapPinsContainer = document.querySelector(`.map__pins`);
 

@@ -1,6 +1,31 @@
 "use strict";
 
+const PIN_START_TOP_POSITION = 375;
+const PIN_START_LEFT_POSITION = 570;
+
 const mainPin = document.querySelector(`.map__pin--main`);
+const address = document.querySelector(`#address`);
+
+window.PriceLimit = {
+  low: {
+    min: 0,
+    max: 10000
+  },
+  middle: {
+    min: 10000,
+    max: 50000
+  },
+  hight: {
+    min: 50000,
+    max: Infinity
+  }
+};
+
+window.setDefaultPinPosition = () => {
+  mainPin.style.left = `${PIN_START_LEFT_POSITION}px`;
+  mainPin.style.top = `${PIN_START_TOP_POSITION}px`;
+  address.value = `${window.pinAddres.x}, ${window.pinAddres.defaultY}`;
+};
 
 window.pinSize = {
   width: mainPin.offsetWidth,
@@ -24,21 +49,6 @@ window.updatePins = () => {
   pins.forEach((p) => {
     p.remove();
   });
-};
-
-window.PriceLimit = {
-  low: {
-    min: 0,
-    max: 10000
-  },
-  middle: {
-    min: 10000,
-    max: 50000
-  },
-  hight: {
-    min: 50000,
-    max: Infinity
-  }
 };
 
 window.code = {

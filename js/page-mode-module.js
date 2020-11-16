@@ -4,21 +4,23 @@ const form = document.querySelector(`.ad-form`);
 const mainPin = document.querySelector(`.map__pin--main`);
 const fieldSets = document.querySelectorAll(`fieldset`);
 const address = form.querySelector(`#address`);
-
+const formFilters = document.querySelector(`.map__filters`);
 const map = document.querySelector(`.map`);
+
 form.classList.add(`ad-form--disabled`);
+formFilters.classList.add(`ad-form--disabled`);
+window.setDefaultPinPosition();
 
 fieldSets.forEach((field) => {
   field.disabled = true;
 });
-
-address.value = `${window.pinAddres.x} ${window.pinAddres.defaultY}`;
 
 const activatePage = () => {
   fieldSets.forEach((field) => {
     field.disabled = false;
     map.classList.remove(`map--faded`);
     form.classList.remove(`ad-form--disabled`);
+    formFilters.classList.remove(`ad-form--disabled`);
   });
   window.pinModule.renderPins(window.pinsArray);
   address.value = `${window.pinAddres.x}, ${window.pinAddres.y}`;

@@ -1,5 +1,7 @@
 "use strict";
 
+const MAX_PINS_AMOUNT = 5;
+
 const mapFilters = document.querySelector(`.map__filters`);
 const houseFilter = mapFilters.querySelector(`#housing-type`);
 const roomFilter = mapFilters.querySelector(`#housing-rooms`);
@@ -37,10 +39,23 @@ const filterPrice = (item) => {
   return currentPrice ? item.offer.price >= currentPrice.min && item.offer.price <= currentPrice.max : true;
 };
 
+const filterAll = (item) => {
+  return filerType(item) && filerRooms(item) && filerGuests(item) && filterFeatures(item) && filterPrice(item);
+};
+
 const filterParams = window.debounce(() => {
   newPins = window.pinsArray.slice(0);
-  newPins = window.pinsArray.filter(filerType).filter(filterPrice).filter(filerRooms).filter(filerGuests).filter(filterFeatures);
-  window.pinModule.renderPins(newPins.slice(0, 5));
+  let filterPins = [];
+  let pinsCount = 0;
+
+  for (let i = 0; i < newPins.length && pinsCount < MAX_PINS_AMOUNT; i++) {
+    let item = newPins[i];
+    if (filterAll(item)) {
+      filterPins.push(item);
+      pinsCount++;
+    }
+  }
+  window.pinModule.renderPins(filterPins);
 });
 
 mapFilters.addEventListener(`change`, () => {

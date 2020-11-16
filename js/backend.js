@@ -1,5 +1,9 @@
 "use strict";
 (() => {
+  const TIME_OUT = 1000;
+  const POST_URL = `https://21.javascript.pages.academy/keksobooking`;
+  const GET_URL = `https://21.javascript.pages.academy/keksobooking/data`;
+
   const main = document.body.querySelector(`main`);
   const errorTemplate = document.querySelector(`#error`).content.querySelector(`.error`);
   const errorPopup = errorTemplate.cloneNode(true);
@@ -7,9 +11,6 @@
   const errorLoadTemplate = document.querySelector(`#load-error`).content.querySelector(`.load-error`);
   const errorLoadPopUp = errorLoadTemplate.cloneNode(true);
   const errorLoadBtn = errorLoadPopUp.querySelector(`.error__button`);
-  const TIME_OUT = 1000;
-  const POST_URL = `https://21.javascript.pages.academy/keksobooking`;
-  const GET_URL = `https://21.javascript.pages.academy/keksobooking/data`;
 
   const sendRequest = (method, url, onSuccess, onError) => {
     let xhr = new XMLHttpRequest();

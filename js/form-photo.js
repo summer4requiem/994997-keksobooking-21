@@ -1,6 +1,7 @@
 "use strict";
 
 const FILE_TYPES = [`gif`, `jpg`, `jpeg`, `png`];
+
 const uploadAvatar = document.querySelector(`.ad-form__field`).querySelector(`input[type=file]`);
 const previewImg = document.querySelector(`.ad-form-header__preview img`);
 const housePicture = document.querySelector(`.ad-form__upload`).querySelector(`input[type=file]`);
