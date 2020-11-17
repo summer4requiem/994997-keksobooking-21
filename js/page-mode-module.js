@@ -1,27 +1,27 @@
 "use strict";
 
 const form = document.querySelector(`.ad-form`);
-const mainPin = document.querySelector(`.map__pin--main`);
-const fieldSets = document.querySelectorAll(`fieldset`);
 const address = form.querySelector(`#address`);
+const mainPin = document.querySelector(`.map__pin--main`);
 const formFilters = document.querySelector(`.map__filters`);
+const fieldSets = document.querySelectorAll(`fieldset`);
+const formSelects = formFilters.querySelectorAll(`select`);
 const map = document.querySelector(`.map`);
 
 form.classList.add(`ad-form--disabled`);
 formFilters.classList.add(`ad-form--disabled`);
 window.setDefaultPinPosition();
 
-fieldSets.forEach((field) => {
-  field.disabled = true;
-});
+window.formFieldDisabled(fieldSets, true);
+window.formFieldDisabled(formSelects, true);
 
 const activatePage = () => {
-  fieldSets.forEach((field) => {
-    field.disabled = false;
-    map.classList.remove(`map--faded`);
-    form.classList.remove(`ad-form--disabled`);
-    formFilters.classList.remove(`ad-form--disabled`);
-  });
+  window.formFieldDisabled(fieldSets, false);
+  window.formFieldDisabled(formSelects, false);
+  map.classList.remove(`map--faded`);
+  form.classList.remove(`ad-form--disabled`);
+  formFilters.classList.remove(`ad-form--disabled`);
+
   window.pinModule.renderPins(window.pinsArray);
   address.value = `${window.pinAddres.x}, ${window.pinAddres.y}`;
 };

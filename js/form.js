@@ -7,7 +7,7 @@ const DEFAULT_IMG = `http://127.0.0.1:5500/img/muffin-grey.svg`;
 
 const form = document.querySelector(`.ad-form`);
 const formFilters = document.querySelector(`.map__filters`);
-
+const formSelects = formFilters.querySelectorAll(`select`);
 const formAvatar = document.querySelector(`.ad-form-header__preview img`);
 const houseImg = document.querySelector(`.ad-form__photo`);
 const inputAdTitle = form.querySelector(`#title`);
@@ -154,9 +154,8 @@ const onDeactivatedPage = () => {
   houseType.value = `any`;
   window.updatePins();
   resetFormPhotos();
-  fieldSets.forEach((field) => {
-    field.disabled = true;
-  });
+  window.formFieldDisabled(fieldSets, true);
+  window.formFieldDisabled(formSelects, true);
   window.pageUtilsModule.addMainPinListeners();
   window.setDefaultPinPosition();
 };

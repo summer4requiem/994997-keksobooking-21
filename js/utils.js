@@ -2,7 +2,6 @@
 
 const PIN_START_TOP_POSITION = 375;
 const PIN_START_LEFT_POSITION = 570;
-
 const mainPin = document.querySelector(`.map__pin--main`);
 const address = document.querySelector(`#address`);
 
@@ -19,6 +18,12 @@ window.PriceLimit = {
     min: 50000,
     max: Infinity
   }
+};
+
+window.formFieldDisabled = (arr, isAvailable) => {
+  arr.forEach((field) => {
+    field.disabled = isAvailable;
+  });
 };
 
 window.setDefaultPinPosition = () => {

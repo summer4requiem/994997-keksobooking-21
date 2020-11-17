@@ -63,4 +63,5 @@ mapFilters.addEventListener(`change`, () => {
   window.cardModule.isCardExist();
   filterParams();
 });
+
 window.xhrModule.load(getPinsArray);

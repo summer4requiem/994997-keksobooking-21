@@ -15,7 +15,6 @@ const cardArticle = cardTemplate.cloneNode(true);
 const featuresPopUp = cardArticle.querySelector(`.popup__features`);
 const cardCloseBtn = cardArticle.querySelector(`.popup__close`);
 
-
 const createPhotos = (img) => {
   const photoContainer = cardArticle.querySelector(`.popup__photos`);
   if (!img.length) {
