@@ -188,6 +188,10 @@ form.addEventListener(`submit`, (evt) => {
 
 onUpdateRoomsNumberList();
 onUpdatePricePlaceHolder();
-formResetBtn.addEventListener(`click`, onDeactivatedPage);
+
+formResetBtn.addEventListener(`click`, (evt) => {
+  evt.preventDefault();
+  onDeactivatedPage();
+});
 adFormType.addEventListener(`change`, onUpdatePricePlaceHolder);
 roomsNumberList.addEventListener(`change`, onUpdateRoomsNumberList);
